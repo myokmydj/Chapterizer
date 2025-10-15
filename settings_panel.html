@@ -1,0 +1,56 @@
+<div class="chapterizer-settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b>Chapterizer Settings</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+            <!-- Master Enable/Disable Toggle -->
+            <div class="chapterizer_block flex-container">
+                <input id="chapterizerMasterEnable" type="checkbox" />
+                <label for="chapterizerMasterEnable">Enable Chapterizer</label>
+                <p class="chapterizer-status">Status: <span id="chapterizerStatusIndicator">Unknown</span></p>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- Chapter Creation -->
+            <h4>Create New Chapter</h4>
+            <div class="chapterizer_block">
+                <small>1. Click 'Select Messages' to start selecting a range.</small><br>
+                <small>2. Click two messages in the chat to select a start and end point.</small>
+            </div>
+            <div class="chapterizer_block flex-container">
+                <button id="chapterizerSelectModeBtn" class="menu_button">Select Messages</button>
+            </div>
+            
+            <!-- These controls will only be visible in select mode -->
+            <div id="chapterizerCreationControls" style="display: none;">
+                <div class="chapterizer_block flex-container">
+                    <label for="chapterizerChapterName">Chapter Name:</label>
+                    <input id="chapterizerChapterName" type="text" class="text_pole" placeholder="Enter chapter name...">
+                </div>
+                <div class="chapterizer_block flex-container">
+                    <label for="chapterizerTitleBgColor">Background Color:</label>
+                    <input id="chapterizerTitleBgColor" type="color" value="#FF007F">
+                </div>
+                <div class="chapterizer_block flex-container">
+                    <label for="chapterizerTitleColor">Text Color:</label>
+                    <input id="chapterizerTitleColor" type="color" value="#FFFFFF">
+                </div>
+                <div class="chapterizer_block flex-container">
+                    <button id="chapterizerCreateBtn" class="menu_button">Create Chapter</button>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- Global Actions -->
+            <h4>Global Actions</h4>
+            <div class="chapterizer_block flex-container">
+                <button id="chapterizerExpandAll" class="menu_button">Expand All Chapters</button>
+                <button id="chapterizerCollapseAll" class="menu_button">Collapse All Chapters</button>
+            </div>
+        </div>
+    </div>
+</div>

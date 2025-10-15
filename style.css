@@ -1,0 +1,280 @@
+@font-face {
+    font-family: 'Paperlogy-9Black';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-9Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+/* General settings panel styling */
+.chapterizer-settings .flex-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.chapterizer-settings label {
+    flex-shrink: 0;
+}
+.chapterizer-settings .text_pole {
+    flex-grow: 1;
+}
+.chapterizer-status {
+    margin-left: auto;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+/* Message selection highlight */
+.mes.chapterizer-selected {
+    outline: 2px solid var(--customThemeColor, #4a90e2);
+    border-radius: 5px;
+}
+
+/* --- NEW CHAPTER HEADER STYLES (Moonlit Echoes Theme) --- */
+
+
+/* Main Header Container */
+.chapterizer-header {
+    position: relative;
+    padding: 20px 25px;
+    margin: 25px 0;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid color-mix(in srgb, var(--SmartThemeBorderColor, #FFFFFF) 25%, transparent);
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--SmartThemeShadowColor, #000000) 20%, transparent);
+    backdrop-filter: blur(var(--SmartThemeBlurStrength, 8px));
+    -webkit-backdrop-filter: blur(var(--SmartThemeBlurStrength, 8px));
+    transition: all 0.4s ease-in-out;
+    align-self: anchor-center;
+        width: -webkit-fill-available;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 70%);
+    mask-image: linear-gradient(to bottom, transparent 5%, black 70%);
+}
+
+.chapterizer-header:hover {
+    border-color: color-mix(in srgb, var(--SmartThemeBorderColor, #FFFFFF) 40%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--SmartThemeShadowColor, #000000) 25%, transparent);
+}
+
+/* Wrapper for the text content */
+.chapterizer-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Top Divider (e.g., --- CHAPTER 01 ---) */
+.chapterizer-top-divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    white-space: nowrap;
+    opacity: 0.8;
+    margin-bottom: 12px;
+    color: currentColor; /* Inherits text color from parent */
+}
+
+/* The lines on either side of the text */
+.chapterizer-top-divider::before,
+.chapterizer-top-divider::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.5;
+}
+
+/* The "CHAPTER 01" text itself */
+.chapterizer-divider-text {
+    padding: 0 1.2em;
+    font-size: 0.85em;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* The main chapter name */
+.chapterizer-main-title {
+    font-size: 1.6em;
+    font-weight: 900;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-family: 'Paperlogy-9Black';
+}
+
+/* Toggle Arrow Icon (Left side) */
+.chapterizer-toggle-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.6em;
+    opacity: 0.6;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease;
+    color: currentColor;
+}
+
+.chapterizer-header:hover .chapterizer-toggle-icon {
+    opacity: 0.9;
+}
+
+.chapterizer-header.collapsed .chapterizer-toggle-icon {
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+/* --- Action Buttons Container (Right side) --- */
+.chapterizer-actions {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 15px;
+    font-size: 1.3em;
+    color: currentColor;
+}
+
+.chapterizer-edit-btn,
+.chapterizer-delete-btn {
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.chapterizer-edit-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    color: var(--customThemeColor, #4a90e2);
+}
+
+.chapterizer-delete-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    color: var(--fullred, rgb(229, 57, 53)); /* Use theme's red for delete hover */
+}
+
+/* --- [NEW] Chapter Index Styles --- */
+#chapterizer-index-toggle-btn {
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    z-index: 999;
+    width: 40px;
+    height: 40px;
+    background-color: var(--menu_button-bg);
+    color: var(--menu_button-text);
+    border: 1px solid var(--menu_button-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+}
+#chapterizer-index-toggle-btn:hover {
+    transform: scale(1.1);
+    background-color: var(--menu_button-hover-bg);
+}
+
+#chapterizer-index-panel {
+    position: fixed;
+    top: 110px;
+    right: 15px;
+    z-index: 1000;
+    width: 300px;
+    max-height: 50vh;
+    background-color: var(--body-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+#chapterizer-index-panel.hidden {
+    display: none;
+}
+.chapterizer-index-header {
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--secondary-bg-color);
+}
+.chapterizer-index-list {
+    list-style: none;
+    margin: 0;
+    padding: 5px 0;
+    overflow-y: auto;
+}
+.chapterizer-index-list li {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color-trans);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chapterizer-index-list li:last-child {
+    border-bottom: none;
+}
+.chapterizer-index-list li:hover {
+    background-color: var(--menu_button-hover-bg);
+}
+.chapterizer-index-list li .chapter-num {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-right: 10px;
+}
+
+/* --- Edit Modal Styles --- */
+#chapterizer-edit-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#chapterizer-edit-modal-overlay.hidden {
+    display: none;
+}
+.chapterizer-edit-modal-content {
+    background-color: var(--body-bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+.chapterizer-edit-modal-content h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.chapterizer-edit-modal-content .flex-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.chapterizer-edit-modal-content label {
+    flex-shrink: 0;
+    width: 120px;
+}
+.chapterizer-edit-modal-content .text_pole {
+    flex-grow: 1;
+}
+.chapterizer-edit-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}

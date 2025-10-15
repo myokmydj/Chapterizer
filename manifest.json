@@ -1,0 +1,11 @@
+{
+    "display_name": "Chapterizer",
+    "loading_order": 999,
+    "requires": [],
+    "optional": [],
+    "js": "main.js",
+    "author": "FT",
+    "version": "1.0.0",
+    "homePage": "",
+    "css": "style.css"
+}

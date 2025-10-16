@@ -43,7 +43,7 @@
 ## ✦ Features
 
 - 🌈 **Visual Chapter Headers**: Insert collapsible, color-customizable chapter headers directly into your chat.
-- 🖱️ **Interactive Selection**: Select a range of messages (start & end) to define a chapter.
+- 🖱️ **Interactive Selection**: Pick the message where each chapter begins; it keeps going until you mark the next one.
 - 📝 **Custom Chapter Names**: Name each chapter for easy navigation.
 - 🎨 **Color Picker**: Choose background and text color for each chapter header.
 - 🗂️ **Chapter Index Panel**: Jump to any chapter instantly via a floating index.
@@ -79,7 +79,7 @@
 
 1. **Enable Chapterizer** in the settings panel.
 2. Click **"Select Messages"** to enter selection mode.
-3. Click **two messages** in the chat (start and end of your chapter).
+3. Click **the message that starts your chapter**; everything after stays there until you create the next one.
 4. Enter a **chapter name** and pick your colors.
 5. Click **"Create Chapter"**.  
    → A header will appear above the start message, and the chapter will be added to the index!

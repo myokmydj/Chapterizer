@@ -92,9 +92,60 @@ async function saveChapters() {
     }
 }
 
+function getAllMessageIds() {
+    return $('.mes')
+        .map((_, el) => Number(el.getAttribute('mesid')))
+        .get()
+        .filter(id => Number.isFinite(id))
+        .sort((a, b) => a - b);
+}
+
+function recalculateChapterBounds() {
+    if (!Array.isArray(chapterData) || chapterData.length === 0) return;
+
+    const messageIds = getAllMessageIds();
+    if (messageIds.length === 0) return;
+
+    const lastMessageId = messageIds[messageIds.length - 1];
+    const sortedChapters = [...chapterData].sort((a, b) => a.start - b.start);
+
+    sortedChapters.forEach((chapter, index) => {
+        const normalizedStart = Number(chapter.start);
+        chapter.start = Number.isFinite(normalizedStart) ? normalizedStart : 0;
+
+        const nextChapter = sortedChapters[index + 1];
+        let calculatedEnd = lastMessageId;
+
+        if (nextChapter) {
+            const nextStart = Number(nextChapter.start);
+            if (Number.isFinite(nextStart) && nextStart > chapter.start) {
+                calculatedEnd = nextStart - 1;
+            } else {
+                calculatedEnd = chapter.start;
+            }
+        }
+
+        if (!Number.isFinite(calculatedEnd)) {
+            calculatedEnd = chapter.start;
+        }
+
+        chapter.end = Math.max(calculatedEnd, chapter.start);
+    });
+
+    chapterData = sortedChapters;
+}
+
+function resolveChapterEnd(chapter) {
+    if (!chapter) return null;
+    const numericEnd = Number(chapter.end);
+    if (!Number.isFinite(numericEnd)) return chapter.start;
+    return Math.max(numericEnd, chapter.start);
+}
+
 // --- UI 및 렌더링 ---
 
 function updateFullUI() {
+    recalculateChapterBounds();
     renderChapters();
     renderChapterIndex();
     const shouldShowIndex = getSettings().isEnabled && chapterData && chapterData.length > 0;
@@ -136,8 +187,10 @@ function renderChapters() {
 
         startMessage.before(headerHtml);
 
+        const chapterEnd = resolveChapterEnd(chapter);
+
         if (chapter.collapsed) {
-            for (let i = chapter.start; i <= chapter.end; i++) {
+            for (let i = chapter.start; i <= chapterEnd; i++) {
                 $(`.mes[mesid="${i}"]`).hide();
             }
         }
@@ -189,33 +242,50 @@ function toggleSelectMode() {
 }
 
 async function handleCreateChapterClick() {
-    if (selectedMessages.length !== 2) {
-        toastr.warning("Please select exactly two messages (a start and an end) to create a chapter.");
+    if (selectedMessages.length !== 1) {
+        toastr.warning("Please select a single message to start the chapter.");
         return;
     }
+
     const chapterName = $('#chapterizerChapterName').val().trim();
     if (!chapterName) {
         toastr.warning("Please enter a name for the chapter.");
         return;
     }
+
+    const startId = Number(selectedMessages[0]);
+    if (!Number.isFinite(startId)) {
+        toastr.error("Could not determine the selected message. Please try again.");
+        return;
+    }
+
+    if (chapterData.some(chapter => Number(chapter.start) === startId)) {
+        toastr.warning("A chapter already begins at that message. Please choose a different start.");
+        return;
+    }
+
     const newChapter = {
         id: Date.now(),
         name: chapterName,
-        start: selectedMessages[0],
-        end: selectedMessages[1],
+        start: startId,
+        end: startId,
         collapsed: false,
         colors: {
             titleBg: $('#chapterizerTitleBgColor').val(),
             titleText: $('#chapterizerTitleColor').val(),
         }
     };
+
     const settings = getSettings();
     settings.lastUsedTitleBgColor = newChapter.colors.titleBg;
     settings.lastUsedTitleColor = newChapter.colors.titleText;
     settings.isSelectModeActive = false;
     saveSettings();
+
     chapterData.push(newChapter);
+    recalculateChapterBounds();
     await saveChapters();
+
     $('#chapterizerChapterName').val('');
     toastr.success(`Chapter "${newChapter.name}" created!`);
     updateSelectModeUI();
@@ -229,6 +299,7 @@ async function handleDeleteChapterClick(event) {
     const chapterIndex = chapterData.findIndex(c => c.id === Number(chapterId));
     if (chapterIndex !== -1) {
         chapterData.splice(chapterIndex, 1);
+        recalculateChapterBounds();
         await saveChapters();
         updateFullUI();
     }
@@ -240,7 +311,8 @@ async function handleToggleChapter(chapterId) {
     chapter.collapsed = !chapter.collapsed;
     await saveChapters();
     $(`.chapterizer-header[data-chapter-id="${chapterId}"]`).toggleClass('collapsed', chapter.collapsed);
-    for (let i = chapter.start; i <= chapter.end; i++) {
+    const chapterEnd = resolveChapterEnd(chapter);
+    for (let i = chapter.start; i <= chapterEnd; i++) {
         $(`.mes[mesid="${i}"]`).toggle(!chapter.collapsed);
     }
 }
@@ -366,7 +438,7 @@ async function initialize() {
             selectedMessages = selectedMessages.filter(id => id !== mesId);
             $message.removeClass('chapterizer-selected');
         } else {
-            if (selectedMessages.length >= 2) {
+            if (selectedMessages.length >= 1) {
                 const oldestId = selectedMessages.shift();
                 $(`.mes[mesid="${oldestId}"]`).removeClass('chapterizer-selected');
             }
